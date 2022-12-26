@@ -1,7 +1,7 @@
 from flask import Flask
 from application.config import APP_CONF
 
-App = Flask(__name__, template_folder='./templates')
+App = Flask(__name__, template_folder='./templates', static_folder='./static')
 for param, value in APP_CONF.PARAMETERS.items():
     App.config[param] = value
 

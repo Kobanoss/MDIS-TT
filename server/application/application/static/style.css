@@ -4,10 +4,15 @@ body {
     font-size: 14px;
 }
 
-.main-content {
-    margin-top: 6rem;
-}
-
 .card-header {
     background-color: #ffffff;
+}
+
+.form-error {
+    text-align: center;
+}
+
+.form-error span{
+    font-weight: bold;
+    color: tomato;
 }

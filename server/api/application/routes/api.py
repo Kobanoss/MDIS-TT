@@ -30,8 +30,8 @@ def get_last_contact():
 
 @api.route("/api/v1.0/user-contacts", methods=['POST'])
 def add_contact():
-    req = request.json()
-    if not req or not 'title' in req:
+    req = request.get_json()
+    if not req:
         abort(400)
     Db.session.add(UserContacts(full_name=req['full_name'],
                                 birth_date=req['birth_date'],

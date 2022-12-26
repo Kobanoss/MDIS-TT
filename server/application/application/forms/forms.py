@@ -1,4 +1,4 @@
-import datetime
+from time import mktime
 
 import phonenumbers
 from flask_wtf import FlaskForm
@@ -32,6 +32,8 @@ class DataForm(FlaskForm):
             raise ValidationError('Invalid phone number')
 
     def jsonsify(self):
-        json_obj = {attr: value for attr, value in self.__dict__}
-        json_obj['birth_date'] = datetime.datetime(json_obj['birth_date']).date().ctime()
-        return
+        json_obj = {'full_name': self.full_name.data,
+                    'birth_date': int(mktime(self.birth_date.data.timetuple())),
+                    'address': self.address.data,
+                    'phone': int(self.phone.data) if self.phone.data[0] != '+' else int(self.phone.data[1:])}
+        return json_obj

@@ -9,6 +9,6 @@ views = Blueprint('views', __name__)
 async def home():
     form = DataForm()
     if form.validate_on_submit():
-        await requests.post(API_URL, form.jsonsify())
+        responce = post(API_URL, json=form.jsonsify())
 
     return render_template('home.html', form=form)
