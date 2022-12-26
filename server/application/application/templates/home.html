@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    <script type=text/javascript src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+
+    <title>MDIS</title>
+
+    <style>
+        @media (min-width: 768px) {
+            .h-md-100 {
+                top: 0px;
+                height: 100vh;
+            }
+        }
+
+        .left-landing {
+            background: center / cover;
+            backdrop-filter: blur(6px);
+        }
+
+        .background-pic {
+            background: center / cover;
+            background-image: url("../static/cover/cover.jpg");
+        }
+    </style>
+</head>
+
+<body>
+<main role="main">
+    <div class="d-md-flex h-md-100 align-items-center background-pic">
+
+        <div class="col-md-4 p-0 h-md-100" style="">
+            <div class="d-md-flex float-right align-items-center h-md-100 p-5 justify-content-center">
+                <div class="">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="card">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        <div class="card-header">
+                            <h5 class="card-title text-center">Register</h5>
+                        </div>
+                        <fieldset class="card-body">
+                            <div class="form-group">
+                                {{ form.full_name(class="form-control rounded-0", placeholder="Full Name") }}
+                                {% if form.full_name.errors %}
+                                <small class="form-text text-muted">
+                                    {% for error in form.full_name.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.birth_date(class="form-control rounded-0", placeholder="Birth Date") }}
+                                {% if form.birth_date.errors %}
+                                <small class="form-text text-muted">
+                                    {% for error in form.birth_date.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.address(class="form-control rounded-0", placeholder="Full Address") }}
+                                {% if form.address.errors %}
+                                <small class="form-text text-muted">
+                                    {% for error in form.address.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.phone(class="form-control rounded-0", placeholder="Phone") }}
+                                {% if form.phone.errors %}
+                                <small class="form-text text-muted">
+                                    {% for error in form.phone.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {{ form.submit(class="btn btn-primary") }}
+                            </ul>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

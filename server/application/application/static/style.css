@@ -1,0 +1,13 @@
+body {
+    background:rgba(250,250,250,1);
+    color: #333333;
+    font-size: 14px;
+}
+
+.main-content {
+    margin-top: 6rem;
+}
+
+.card-header {
+    background-color: #ffffff;
+}
