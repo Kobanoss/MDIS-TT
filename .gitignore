@@ -54,7 +54,7 @@ compile_commands.json
 *_qmlcache.qrc
 
 # JetBrains Staff
-*/idea/
+.idea/
 
 ### Python template
 # Byte-compiled / optimized / DLL files
