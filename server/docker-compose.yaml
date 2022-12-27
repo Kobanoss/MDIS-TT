@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    command: gunicorn --bind 0.0.0.0:6000 run:App
+    env_file:
+      - ./services/env/api.env
+    expose:
+      - 6000
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  web-socket:
+    build:
+      context: ./websocket
+      dockerfile: Dockerfile
+    command: gunicorn --bind 0.0.0.0:8000 run:App
+    env_file:
+      - ./services/env/websocket.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  application:
+    build:
+      context: ./application
+      dockerfile: Dockerfile
+    command: gunicorn --bind 0.0.0.0:5000 run:App
+    env_file:
+      - ./services/env/application.env
+    expose:
+      - 5000
+    depends_on:
+      - web-socket
+      - api
+    restart: unless-stopped
+
+  nginx:
+    build: 
+      context: ./services/nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+      # - 8000:8000
+    depends_on:
+      - application
+      - web-socket
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./services/env/postgres.env
+    expose:
+      - 5432
+    restart: unless-stopped
+
+
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
+    env_file:
+      - ./services/env/dbeaver.env
+    volumes:
+       - dbeaver_workspace:/opt/cloudbeaver/workspace
+    ports:
+      - 9000:8978
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+
+volumes:
+  postgres_data:
+  dbeaver_workspace:
