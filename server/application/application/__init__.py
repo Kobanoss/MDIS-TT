@@ -6,6 +6,7 @@ for param, value in APP_CONF.PARAMETERS.items():
     App.config[param] = value
 
 API_URL = APP_CONF.API_URL
+WS_URL = APP_CONF.WS_URL
 
 from application.routes import views
 

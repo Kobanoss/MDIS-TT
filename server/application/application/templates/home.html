@@ -18,16 +18,11 @@
     <title>MDIS</title>
 
     <style>
-        @media (min-width: 768px) {
+        @media (min-width: 255px) {
             .h-md-100 {
-                top: 0px;
+                top: 0;
                 height: 100vh;
             }
-        }
-
-        .left-landing {
-            background: center / cover;
-            backdrop-filter: blur(6px);
         }
 
         .background-pic {
@@ -64,8 +59,9 @@
                             <h5 class="card-title text-center">Send Data</h5>
                         </div>
                         <fieldset class="card-body">
-                            <div class="form-group">
-                                {{ form.full_name(class="form-control rounded-0", placeholder="Full Name") }}
+                            <div id="ff" class="form-group">
+                                {{ form.full_name(class="form-control rounded-0", placeholder="Full Name",
+                                id="full_name") }}
                                 {% if form.full_name.errors %}
                                 <small class="form-error form-text text-muted">
                                     {% for error in form.full_name.errors %}
@@ -75,7 +71,8 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                {{ form.birth_date(class="form-control rounded-0", placeholder="Birth Date") }}
+                                {{ form.birth_date(class="form-control rounded-0", placeholder="Birth Date",
+                                id="birth_date") }}
                                 {% if form.birth_date.errors %}
                                 <small class="form-error form-text text-muted">
                                     {% for error in form.birth_date.errors %}
@@ -85,7 +82,8 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                {{ form.address(class="form-control rounded-0", placeholder="Full Address") }}
+                                {{ form.address(class="form-control rounded-0", placeholder="Full Address",
+                                id="address") }}
                                 {% if form.address.errors %}
                                 <small class="form-error form-text text-muted">
                                     {% for error in form.address.errors %}
@@ -95,7 +93,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                {{ form.phone(class="form-control rounded-0", placeholder="Phone") }}
+                                {{ form.phone(class="form-control rounded-0", placeholder="Phone", id="phone") }}
                                 {% if form.phone.errors %}
                                 <small class="form-error form-text text-muted">
                                     {% for error in form.phone.errors %}
@@ -109,6 +107,29 @@
                             </ul>
                         </fieldset>
                     </form>
+                    <script>
+                        const socket = new WebSocket('{{ WS_URL }}');
+                        let prev_response = null;
+                        socket.addEventListener('message', event => {
+                            const response = JSON.parse(event.data)
+                            if (prev_response !== response) {
+                                prev_response = response;
+                                Object.entries(response).forEach(([key, value]) => {
+                                    if (key === "birth_date") {
+                                        value = new Date(value * 1000).toISOString().slice(0, 10);
+                                        document.getElementById(key).value = value;
+                                    } else if (key === "phone") {
+                                        if (value.toString().length === 11)
+                                            document.getElementById(key).value = '+' + value.toString();
+                                        else
+                                            document.getElementById(key).value = value.toString();
+                                    } else if ((key != null) && (key !== "id") && (key !== "created_at")) {
+                                        document.getElementById(key).value = value;
+                                    }
+                                });
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>
