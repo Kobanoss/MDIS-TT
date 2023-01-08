@@ -47,7 +47,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 80:80
-      # - 8000:8000
     depends_on:
       - application
       - web-socket

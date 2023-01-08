@@ -2,6 +2,6 @@
 
 cd server
 
-docker-compose down
+docker-compose down --volumes --rmi all
 
-echo "\033[92m"">> Server killed!"
+echo "\033[92m"">> Server deleting script completed!"

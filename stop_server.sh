@@ -4,4 +4,4 @@ cd server
 
 docker-compose stop
 
-echo "\033[92m"">> Server stopped!"
+echo "\033[92m"">> Server stop script completed!"

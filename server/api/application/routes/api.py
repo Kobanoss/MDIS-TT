@@ -25,6 +25,8 @@ async def change_contact(contact_id):
 @api.route("/api/v1.0/user-contacts", methods=['GET'])
 def get_last_contact():
     contact = UserContacts.query.order_by(UserContacts.id.desc()).first()
+    if not contact:
+        return make_response(jsonify({'status': 'none'}), 200)
     return make_response(contact.jsonsify(), 200)
 
 

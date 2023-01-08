@@ -1,4 +1,4 @@
-from time import mktime
+from datetime import datetime
 
 import phonenumbers
 from flask_wtf import FlaskForm
@@ -33,7 +33,7 @@ class DataForm(FlaskForm):
 
     def jsonsify(self):
         json_obj = {'full_name': self.full_name.data,
-                    'birth_date': int(mktime(self.birth_date.data.timetuple())),
+                    'birth_date': int(datetime.fromisocalendar(*self.birth_date.data.isocalendar()).timestamp()) + 10800,
                     'address': self.address.data,
                     'phone': int(self.phone.data) if self.phone.data[0] != '+' else int(self.phone.data[1:])}
         return json_obj
