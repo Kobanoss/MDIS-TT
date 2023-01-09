@@ -1,5 +1,3 @@
-import sys
-
 from PySide2.QtCore import QTimer, QUrl
 from PySide2.QtGui import QIcon
 from PySide2.QtWebEngineWidgets import QWebEngineView
@@ -33,7 +31,9 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    from sys import exit
+
+    app = QApplication(['', '--no-sandbox'])
     window = MainWindow()
 
     timer = QTimer()
@@ -45,4 +45,4 @@ if __name__ == '__main__':
                   window.screen().availableGeometry().height() * 2 / 3)
     window.show()
 
-    sys.exit(app.exec_())
+    exit(app.exec_())
