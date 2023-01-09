@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <script type=text/javascript src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+
+    <title>MDIS</title>
+
+    <style>
+        @media (min-width: 255px) {
+            .h-md-100 {
+                top: 0;
+                height: 100vh;
+            }
+        }
+
+        .background-pic {
+            background: center / cover;
+            background-image: url("../static/cover/cover.jpg");
+        }
+    </style>
+</head>
+
+<body>
+<main role="main">
+    <div class="d-md-flex h-md-100 align-items-center background-pic">
+        <div class="col-md-4 p-0 h-md-100" style="">
+            <div class="d-md-flex float-right align-items-center h-md-100 p-5 justify-content-center">
+                <div class="">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="card">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        <div class="card-header">
+                            <h5 class="card-title text-center">User Data</h5>
+                        </div>
+                        <fieldset class="card-body">
+                            <div id="ff" class="form-group">
+                                {{ form.full_name(class="form-control rounded-0", placeholder="Full Name",
+                                id="full_name") }}
+                                {% if form.full_name.errors %}
+                                <small class="form-error form-text text-muted">
+                                    {% for error in form.full_name.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.birth_date(class="form-control rounded-0", placeholder="Birth Date",
+                                id="birth_date") }}
+                                {% if form.birth_date.errors %}
+                                <small class="form-error form-text text-muted">
+                                    {% for error in form.birth_date.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.address(class="form-control rounded-0", placeholder="Full Address",
+                                id="address") }}
+                                {% if form.address.errors %}
+                                <small class="form-error form-text text-muted">
+                                    {% for error in form.address.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.phone(class="form-control rounded-0", placeholder="Phone", id="phone") }}
+                                {% if form.phone.errors %}
+                                <small class="form-error form-text text-muted">
+                                    {% for error in form.phone.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {{ form.submit(class="btn btn-primary") }}
+                            </ul>
+                        </fieldset>
+                    </form>
+                    <script>
+                        const socket = new WebSocket('{{ WS_URL }}');
+                        let prev_response = null;
+                        socket.addEventListener('message', event => {
+                            const response = JSON.parse(event.data)
+                            if (prev_response !== response) {
+                                prev_response = response;
+                                Object.entries(response).forEach(([key, value]) => {
+                                    if (key === "birth_date") {
+                                        value = new Date(value * 1000).toISOString().slice(0, 10);
+                                        document.getElementById(key).value = value;
+                                    } else if (key === "phone") {
+                                        if (value.toString().length === 11)
+                                            document.getElementById(key).value = '+' + value.toString();
+                                        else
+                                            document.getElementById(key).value = value.toString();
+                                    } else if ((key != null) && (key !== "id") && (key !== "created_at")) {
+                                        document.getElementById(key).value = value;
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

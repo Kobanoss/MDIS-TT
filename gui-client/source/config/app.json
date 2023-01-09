@@ -1,0 +1,8 @@
+{
+  "web-app-url": "http://localhost/",
+  "window-title": "MDIS-Forms",
+  "static-dir": "./static",
+  "minimum-width": 630,
+  "minimum-height": 420,
+  "reload-interval": 15000
+}

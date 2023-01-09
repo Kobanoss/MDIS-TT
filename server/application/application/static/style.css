@@ -1,0 +1,19 @@
+body {
+    background:rgba(250,250,250,1);
+    color: #333333;
+    font-size: 14px;
+    min-width: 255px;
+}
+
+.card-header {
+    background-color: #ffffff;
+}
+
+.form-error {
+    text-align: center;
+}
+
+.form-error span{
+    font-weight: bold;
+    color: tomato;
+}
