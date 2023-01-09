@@ -2,7 +2,6 @@
 
 cd server
 
-docker-compose up -d
-sleep 3.5
+docker-compose build --no-cache
 
 echo "\033[92m"">> Server start script completed!"
