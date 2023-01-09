@@ -1,3 +1,6 @@
+# Execute to make all shell-scripts executable:
+    sudo chmod +x xscripts.sh && ./xscripts.sh
+
 # Task for MDIS / Server-part
 
 ## To run dockerized version of server, execute:
