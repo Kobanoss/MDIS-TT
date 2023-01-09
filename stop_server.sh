@@ -4,4 +4,4 @@ cd server
 
 docker-compose stop
 
-echo "\033[92m"">> Server stop script completed!"
+echo -e "\033[92m>> Server STOP script completed!$(tput sgr 0)"

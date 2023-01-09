@@ -4,4 +4,4 @@ cd server
 
 docker-compose build --no-cache
 
-echo "\033[92m"">> Server start script completed!"
+echo -e "\033[92m>> Server BUILD script completed!$(tput sgr 0)"
